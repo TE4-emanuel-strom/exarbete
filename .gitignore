@@ -1,4 +1,6 @@
+old/
 csv/
 db/
 *.lock
 .DS_Store
+
