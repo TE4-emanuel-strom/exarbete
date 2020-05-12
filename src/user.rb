@@ -26,5 +26,3 @@ def user()
     }
 
 end
-
-pp user
