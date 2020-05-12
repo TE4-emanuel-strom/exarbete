@@ -1,6 +1,7 @@
 old/
 csv/
-db/
+nosql/
+sql/
 *.json
 *.lock
 .DS_Store
