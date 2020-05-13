@@ -1,9 +1,7 @@
 require 'faker'
 require 'json'
 
-require_relative 'coffee'
-
-def user()
+def user(coffees)
     name = Faker::Name.name
     adress = {
             "street" => Faker::Address.street_address,
@@ -13,7 +11,7 @@ def user()
 
     cart = []
     rand(1..10).times {
-        cart << coffee
+        cart << coffees.sample
     }
 
     user = {

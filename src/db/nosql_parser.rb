@@ -62,4 +62,4 @@ def parse_json(file_name)
     }
 end
 
-parse_json("100")
+parse_json("10k")

@@ -1,11 +1,19 @@
 require_relative 'user'
+require_relative 'coffee'
+
 require 'json'
 
-def generate(num)
+def main
+    generate 100
+    generate 10000
+    generate 100000
+end
 
+def generate(num)
+    shelf = stack_shelve
     arr = []
 
-    num.times { arr << user }
+    num.times { arr << user(shelf) }
     json = JSON.generate(arr)
 
     File.open("#{name(num)}.json", 'w') { |file| file.write(json) }
@@ -25,3 +33,5 @@ def name(num)
     end
 
 end
+
+main
