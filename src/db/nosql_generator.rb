@@ -51,4 +51,3 @@ def generate_nosql(file_name)
 end
 
 main
-

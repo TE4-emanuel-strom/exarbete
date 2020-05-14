@@ -2,7 +2,7 @@ require 'json'
 
 class JsonParser
 
-    attr_reader :file_name, :json_raw, :users, :coffees
+    attr_reader :users, :coffees, :carts
 
 
     def initialize(json_file)
@@ -10,6 +10,7 @@ class JsonParser
         @json_raw = get_json
         @users = @json_raw
         @coffees = parse_coffees
+        @carts = get_carts
     end
 
 
@@ -19,6 +20,14 @@ class JsonParser
         file.close
 
         return JSON.parse(json)
+    end
+
+    def get_carts
+        carts = {}
+        @users.each { |user| 
+            carts[user["user_id"]] = user["cart"]
+        }
+        carts
     end
 
 
