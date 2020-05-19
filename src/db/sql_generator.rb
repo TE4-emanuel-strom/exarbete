@@ -5,9 +5,18 @@ require 'json'
 
 
 def main
-    generate_sql "100"
-    generate_sql "10k"
-    #generate_sql "100k"
+
+end
+
+
+def select_sql(db_name, table, column, value)
+
+    db = SQLite3::Database.open "sql/#{db_name}.db"
+
+
+    
+    pp yield("Emanuel")
+
 end
 
 
@@ -41,8 +50,7 @@ def generate_users_table(users, db)
     ( name, user_id, email, username )
     VALUES (?, ?, ?, ?)
     "
-    pp name
-    db.execute query, [name, user_id, email, username]
+        db.execute query, [name, user_id, email, username]
     } 
 end
 
@@ -82,7 +90,6 @@ def generate_carts_table(carts, db)
             ( user_id, coffee_id )
             VALUES (?, ?)
             "
-            pp coffee_id
             db.execute insert_query, [user_id, coffee_id]
         }
     }

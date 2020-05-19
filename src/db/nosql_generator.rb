@@ -2,21 +2,21 @@ require_relative 'json_parser'
 
 require 'leveldb'
 require 'json'
+require 'fileutils'
 
 
 def main
-    generate_nosql "100"
-    generate_nosql "10k"
-    generate_nosql "100k"
+    
 end
 
 
 def insert_user(user, db)
 
+    
     json = JSON.generate user
-    name = "user/#{user["name"]}"
+    id = "user/#{user["user_id"]}"
 
-    db.put(name, json)
+    db.put(id, json)
 end
 
 
@@ -46,7 +46,7 @@ def generate_nosql(file_name)
         insert_coffee coffee, db
     }
 
-    return db
+    db.close
 
 end
 
