@@ -9,17 +9,6 @@ def main
 end
 
 
-def select_sql(db_name, table, column, value)
-
-    db = SQLite3::Database.open "sql/#{db_name}.db"
-
-
-    
-    pp yield("Emanuel")
-
-end
-
-
 def generate_sql(file_name)
     db = SQLite3::Database.new "sql/#{file_name}.db"
     parser = JsonParser.new file_name
