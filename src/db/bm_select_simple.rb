@@ -4,19 +4,21 @@ require 'benchmark'
 require_relative 'helpers'
 
 
-def bm_select_simple_100
+def bm_select_simple_100(itterations=1000)
 
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/100.db"
     leveldb = LevelDB::DB.new("nosql/100.db")
 
-    pp "100"
+    puts "\nSelect Simple 100"
 
     name = db.execute("SELECT name FROM users").flatten.sample
     sql_query ="SELECT * FROM users WHERE name = ?"
     
-    10000.times do |index|
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, name
         end
@@ -39,26 +41,28 @@ def bm_select_simple_100
         
         sql_times << sql
         nosql_times << nosql
-        
-        pp "100: #{index}"
     end
+
     leveldb.close
+    puts "\n"
     
-    File.open("logs/simple_get_100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/simple/100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
-def bm_select_simple_10k
+def bm_select_simple_10k(itterations=1000)
 
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/10k.db"
 
-    pp "10k"
+    puts "\nSelect Simple 10k"
 
     name = db.execute("SELECT name FROM users").flatten.sample
     sql_query ="SELECT * FROM users WHERE name = ?"
     
-    1000.times do |index|
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, name
         end
@@ -83,25 +87,26 @@ def bm_select_simple_10k
 
         sql_times << sql
         nosql_times << nosql
-
-        pp "10k: #{index}"
     end
     
-    File.open("logs/simple_get_10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    puts "\n"
+    File.open("logs/simple/10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
-def bm_select_simple_100k
+def bm_select_simple_100k(itterations=100)
 
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/100k.db"
 
-    pp "100k"
+    puts "\nSelect Simple 100k"
 
     name = db.execute("SELECT name FROM users").flatten.sample
     sql_query ="SELECT * FROM users WHERE name = ?"
     
-    500.times do |index|
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, name
         end
@@ -126,9 +131,8 @@ def bm_select_simple_100k
 
         sql_times << sql
         nosql_times << nosql
-
-        pp "100k: #{index}"
     end
     
-    File.open("logs/simple_get_100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    puts "\n"
+    File.open("logs/simple/100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end

@@ -10,13 +10,21 @@ def main
 end
 
 def generate(num)
+
+    json_name = name(num)
+    puts "\nGenerate JSON #{json_name}"
+
     shelf = stack_shelve
     arr = []
 
-    num.times { arr << user(shelf) }
+    num.times do |index|
+        print "\r#{index + 1} / #{num}" 
+         arr << user(shelf) 
+    end
+    puts "\n"
     json = JSON.generate(arr)
 
-    File.open("#{name(num)}.json", 'w') { |file| file.write(json) }
+    File.open("#{json_name}.json", 'w') { |file| file.write(json) }
 end
 
 

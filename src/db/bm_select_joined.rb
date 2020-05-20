@@ -5,13 +5,13 @@ require 'sqlite3'
 require 'benchmark'
 require 'json'
 
-def bm_select_joined_100
+def bm_select_joined_100(itterations=103400)
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/100.db"
     leveldb = LevelDB::DB.new("nosql/100.db")
 
-    pp "100"
+    puts "\nSelect Joined 100"
 
     id = db.execute("SELECT user_id FROM users").flatten.sample
     sql_query = "
@@ -27,7 +27,9 @@ def bm_select_joined_100
      users.user_id = ?
     "
     
-    10000.times do |index|
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, id
         end
@@ -42,21 +44,23 @@ def bm_select_joined_100
         
         sql_times << sql
         nosql_times << nosql
-        pp "100: #{index}"
     end
-    leveldb.close    
+
+    leveldb.close 
     
-    File.open("logs/joined_get_100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    puts "\n"
+    
+    File.open("logs/joined/100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
 
-def bm_select_joined_10k
+def bm_select_joined_10k(itterations=10000)
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/10k.db"
     leveldb = LevelDB::DB.new("nosql/10k.db")
 
-    pp "10k"
+    puts "\nSelect Joined 10k"
 
     id = db.execute("SELECT user_id FROM users").flatten.sample
     sql_query = "
@@ -72,7 +76,9 @@ def bm_select_joined_10k
      users.user_id = ?
     "
     
-    5000.times do |index|
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, id
         end
@@ -86,21 +92,23 @@ def bm_select_joined_10k
         
         sql_times << sql
         nosql_times << nosql
-        pp "10k: #{index}"
     end
-    leveldb.close    
+
+    leveldb.close  
+    puts "\n"  
     
-    File.open("logs/joined_get_10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/joined/10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
 
-def bm_select_joined_100k
+def bm_select_joined_100k(itterations=200)
+
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/100k.db"
     leveldb = LevelDB::DB.new("nosql/100k.db")
 
-    pp "100k"
+    puts "\nSelect Joined 100k"
 
     id = db.execute("SELECT user_id FROM users").flatten.sample
     sql_query = "
@@ -116,7 +124,9 @@ def bm_select_joined_100k
      users.user_id = ?
     "
     
-    2000.times do |index|
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, id
         end
@@ -130,9 +140,10 @@ def bm_select_joined_100k
         
         sql_times << sql
         nosql_times << nosql
-        pp "100k: #{index}"
     end
+
     leveldb.close    
+    puts "\n"
     
-    File.open("logs/joined_get_100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/joined/100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end

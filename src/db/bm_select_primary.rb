@@ -4,17 +4,19 @@ require 'benchmark'
 require_relative 'helpers'
 
 
-def bm_select_primary_100
+def bm_select_primary_100(itterations=1000)
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/100.db"
 
-    pp "100"
+    puts "\nSelect Primary 100"
 
     id = db.execute("SELECT user_id FROM users").flatten.sample
     sql_query ="SELECT * FROM users WHERE user_id = ?"
-    
-    10000.times do |index|
+
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, id
         end
@@ -30,26 +32,28 @@ def bm_select_primary_100
 
         sql_times << sql
         nosql_times << nosql
-
-        pp "100: #{index}"
     end
+
+    puts "\n"
     
-    File.open("logs/primary_get_100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/primary/100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
 
-def bm_select_primary_10k
+def bm_select_primary_10k(itterations=1000)
 
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/10k.db"
 
-    pp "10k"
+    puts "\nSelect Primary 10k"
 
     id = db.execute("SELECT user_id FROM users").flatten.sample
     sql_query ="SELECT * FROM users WHERE user_id = ?"
-    
-    10000.times do |index|
+
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, id
         end
@@ -65,26 +69,27 @@ def bm_select_primary_10k
 
         sql_times << sql
         nosql_times << nosql
-
-        pp "10k: #{index}"
     end
-    
-    File.open("logs/primary_get_10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+
+    puts "\n"
+    File.open("logs/primary/10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
 
-def bm_select_primary_100k
+def bm_select_primary_100k(itterations=100)
 
     sql_times = []
     nosql_times = []
     db = SQLite3::Database.open "sql/100k.db"
 
-    pp "100k"
+    puts "\nSelect Primary 100k"
 
     id = db.execute("SELECT user_id FROM users").flatten.sample
     sql_query ="SELECT * FROM users WHERE user_id = ?"
-    
-    10000.times do |index|
+
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
+
         sql = Benchmark.realtime do
             db.execute sql_query, id
         end
@@ -100,9 +105,9 @@ def bm_select_primary_100k
 
         sql_times << sql
         nosql_times << nosql
-
-        pp "100k: #{index}"
     end
+
+    puts "\n"
     
-    File.open("logs/primary_get_100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/primary/100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end

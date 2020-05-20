@@ -4,14 +4,16 @@ require 'benchmark'
 require_relative 'helpers'
 
 
-def bm_generate_100
+def bm_generate_100(itterations=10)
     sql_times = []
     nosql_times = []
 
     i = 1
-    pp "100"
+    puts "\nGenerate 100"
     
-    100.times {
+    itterations.times do |index| 
+
+        print "\r#{index + 1} / #{itterations}"
 
         nosql = Benchmark.realtime {
             generate_nosql "100"
@@ -23,25 +25,22 @@ def bm_generate_100
         
         nosql_times << nosql
         sql_times << sql
-        pp i
-        i += 1
-    }
+    end
 
-    avg_sql = average(sql_times)
-    avg_nosql = average(nosql_times)
+    puts "\n"
 
-    File.open("logs/generate100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/generate/100.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
 
-def bm_generate_10k
+def bm_generate_10k(itterations=3)
     sql_times = []
     nosql_times = []
 
-    i = 1
-    pp "10k"
+    puts "\nGenerate 10k"
     
-    10.times {
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
 
         nosql = Benchmark.realtime {
             generate_nosql "10k"
@@ -53,25 +52,23 @@ def bm_generate_10k
         
         nosql_times << nosql
         sql_times << sql
-        pp i
-        i += 1
-    }
+    end
 
-    avg_sql = average(sql_times)
-    avg_nosql = average(nosql_times)
+    puts "\n"
 
-    File.open("logs/generate10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/generate/10k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
 
 
-def bm_generate_100k
+def bm_generate_100k(itterations=1)
     sql_times = []
     nosql_times = []
 
-    i = 1
-    pp "100k"
+    puts "\nSelect Primary 100k"
+    itterations = 5
     
-    5.times {
+    itterations.times do |index|
+        print "\r#{index + 1} / #{itterations}"
 
         nosql = Benchmark.realtime {
             generate_nosql "100k"
@@ -83,12 +80,9 @@ def bm_generate_100k
         
         nosql_times << nosql
         sql_times << sql
-        pp i
-        i += 1
-    }
+    end
 
-    avg_sql = average(sql_times)
-    avg_nosql = average(nosql_times)
+    puts "\n"
 
-    File.open("logs/generate100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
+    File.open("logs/generate/100k.txt", "a") { |file| write_to_file(file, sql_times, nosql_times) }
 end
