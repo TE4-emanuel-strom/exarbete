@@ -64,7 +64,7 @@ def bm_generate_100k(itterations=1)
     sql_times = []
     nosql_times = []
 
-    puts "\nSelect Primary 100k"
+    puts "\nGenerate 100k"
     itterations = 5
     
     itterations.times do |index|
