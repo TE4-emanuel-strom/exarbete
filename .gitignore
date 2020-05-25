@@ -2,7 +2,6 @@ old/
 csv/
 nosql/
 sql/
-*.txt
 *.json
 *.lock
 .DS_Store
